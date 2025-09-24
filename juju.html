@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jojo's 22nd Birthday 🎉</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background: pink;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      margin-top: 40px;
+      font-size: 3em;
+      color: #fff;
+      text-shadow: 2px 2px #ff66b2;
+    }
+
+    #countdown {
+      font-size: 2em;
+      margin-top: 20px;
+      color: #fff;
+    }
+
+    button {
+      margin: 15px;
+      padding: 10px 20px;
+      background: #ff66b2;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    .balloon {
+      width: 80px;
+      height: 100px;
+      background: radial-gradient(circle at 50% 35%, #ff6699, #ff3366);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      position: absolute;
+      bottom: -150px;
+      animation: float 8s infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-600px); }
+      100% { transform: translateY(0); }
+    }
+
+    /* Cake */
+    #cake-container {
+      position: relative;
+      width: 300px;
+      height: 220px;
+      margin: 30px auto;
+    }
+    .cake-layer {
+      width: 100%;
+      height: 60px;
+      border-radius: 20px;
+      position: absolute;
+      left: 0;
+      background: #ff99cc;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .cake-layer:nth-child(1) { bottom: 0; }
+    .cake-layer:nth-child(2) { bottom: 60px; background: #ffb3d9; }
+    .cake-layer:nth-child(3) { bottom: 120px; background: #ffccff; }
+
+    .candle {
+      width: 12px;
+      height: 40px;
+      background: #fff;
+      position: absolute;
+      bottom: 180px;
+      border-radius: 2px;
+    }
+    .flame {
+      width: 12px;
+      height: 12px;
+      background: gold;
+      border-radius: 50%;
+      position: absolute;
+      top: -12px;
+      left: 0;
+      animation: flicker 1s infinite;
+    }
+    @keyframes flicker {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+    }
+
+    /* Popup */
+    #popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0px 5px 20px rgba(0,0,0,0.3);
+      z-index: 1000;
+      max-width: 500px;
+    }
+    #popup h2 {
+      color: #ff66b2;
+      font-family: "Brush Script MT", cursive;
+    }
+    #popup p {
+      white-space: pre-line;
+      font-size: 1.1em;
+      line-height: 1.6;
+      color: #444;
+    }
+    #popup button {
+      background: #ff3366;
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: white;
+    }
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 500;
+    }
+  </style>
+</head>
+<body>
+  <h1>Happy 22nd Birthday, Jojo! 🎂🎉</h1>
+  <p id="countdown"></p>
+
+  <button id="candles-btn">Blow Candles 🎂</button>
+  <button id="message-btn">Birthday Letter 💌</button>
+
+  <!-- Cake -->
+  <div id="cake-container">
+    <div class="cake-layer"></div>
+    <div class="cake-layer"></div>
+    <div class="cake-layer"></div>
+    <!-- Candles on top layer -->
+    <div class="candle" style="left:40px"><div class="flame"></div></div>
+    <div class="candle" style="left:140px"><div class="flame"></div></div>
+    <div class="candle" style="left:240px"><div class="flame"></div></div>
+  </div>
+
+  <!-- Popup -->
+  <div id="overlay"></div>
+  <div id="popup">
+    <h2>💌 YOUR BIRTHDAY LETTER 💌</h2>
+    <p>
+i never thought in a million years that I’d be so lucky to meet such a wonderful person like you,
+I have enjoyed every little moment with you, whether it's the friendship chapter or the partners chapter, even the classmates chapter.
+
+You have made me a better person, your presence itself brings the best in me, i could never think of you as something ordinary,
+you only come once in a lifetime and i would never dare to lose you.
+
+I hope i get to celebrate every birthday with you until we grow old together in our silly barbie house that you always wanted.
+
+Love, Raya 💖
+    </p>
+    <button id="close-popup">Close</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    // 🎉 Confetti loop
+    function launchConfetti() {
+      confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
+    }
+    setInterval(launchConfetti, 3000);
+
+    // 🎈 Balloons
+    for (let i = 0; i < 10; i++) {
+      const balloon = document.createElement("div");
+      balloon.className = "balloon";
+      balloon.style.left = Math.random() * window.innerWidth + "px";
+      balloon.style.animationDuration = (5 + Math.random() * 5) + "s";
+      document.body.appendChild(balloon);
+    }
+
+    // ⏳ Countdown
+    const countdownElement = document.getElementById("countdown");
+    const birthday = new Date("Sep 25, 2025 00:00:00").getTime();
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = birthday - now;
+      const days = Math.floor(distance / (1000*60*60*24));
+      const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+      const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+      const seconds = Math.floor((distance % (1000*60)) / 1000);
+      countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s until Jojo's birthday 🎂";
+      if(distance < 0) countdownElement.innerHTML = "Happy Birthday Jojo! 🎉🎂";
+    }
+    setInterval(updateCountdown, 1000);
+
+    // 🎂 Blow Candles
+    const candlesBtn = document.getElementById("candles-btn");
+    candlesBtn.addEventListener("click", () => {
+      const flames = document.querySelectorAll(".flame");
+      flames.forEach(f => f.style.display = "none"); // turn off flames
+      confetti({ particleCount: 150, spread: 100, colors: ['#ffff99','#ffcc00','#ffffff'], origin:{y:0.7} });
+      alert("The candles are blown out! 🎂✨");
+    });
+
+    // 💌 Popup
+    const popup = document.getElementById("popup");
+    const overlay = document.getElementById("overlay");
+    document.getElementById("message-btn").addEventListener("click", () => {
+      popup.style.display = "block"; overlay.style.display = "block";
+    });
+    document.getElementById("close-popup").addEventListener("click", () => {
+      popup.style.display = "none"; overlay.style.display = "none";
+    });
+  </script>
+</body>
+</html>
